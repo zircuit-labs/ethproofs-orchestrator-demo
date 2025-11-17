@@ -1,0 +1,98 @@
+services:
+  # Messaging system used by our services
+  nats:
+    image: nats:2.12.2
+    command: -js -DV
+
+    ports:
+      - "4223:4222"
+      - "8223:8222"
+    volumes:
+      - ./nats-server.conf:/etc/nats/nats-server.conf
+    healthcheck:
+      test: [ "CMD", "nats-server", "--health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Container to initialize NATS with the base stream
+  nats-init:
+    image: natsio/nats-box
+    depends_on:
+      - nats
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        nats --server=nats://host.docker.internal:4223 stream add modularorchestrator \
+          --subjects="modularorchestrator.>" \
+          --storage=file \
+          --replicas=1 \
+          --retention=limits \
+          --discard=old \
+          --max-msgs=-1 \
+          --max-msgs-per-subject=-1 \
+          --max-bytes=-1 \
+          --max-age=-1 \
+          --max-msg-size=-1 \
+          --dupe-window=2m \
+          --allow-rollup \
+          --no-deny-delete \
+          --no-deny-purge
+
+  # 1. Orchestrator service to collect and blocks from the network
+  block-collector:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8888:8888"
+    env_file: ".env"
+    depends_on:
+      - nats-init
+    environment:
+      - INPUT_QUEUE=modularorchestrator.unused
+      - OUTPUT_QUEUE=modularorchestrator.blocks
+      - STRATEGY=Block
+      - NUM_INPUTS=1
+      - SINGLE_OUTPUT=true
+      - COLLECT_TIMEOUT_PERIOD_MILLIS=500
+      - NEXT_BLOCK=${NEXT_BLOCK:-23818220}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: collector
+
+  # 2. Orchestrator dispatcher which calls into the prover binary to generate proof
+  mock-prover:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8900:8888"
+    env_file: ".env"
+    depends_on:
+      - nats-init
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_prover_linux_arm64_musl  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+
+  proof-collector:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8889:8888"
+    env_file: ".env"
+    depends_on:
+      - nats-init
+    environment:
+      - INPUT_QUEUE=modularorchestrator.block_proofs,modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.completed_proofs
+      - STRATEGY=Proof
+      - SINGLE_OUTPUT=true
+      - COLLECT_TIMEOUT_PERIOD_MILLIS=500
+      - NUM_INPUTS=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: collector
