@@ -3,10 +3,8 @@ mod prover;
 mod sp1_prover;
 
 use clap::Parser;
-use serde::{Deserialize, Serialize};
 use crate::mock_prover::MockProver;
 use crate::prover::Prover;
-use crate::sp1_prover::Sp1Prover;
 
 /// Example CLI with one optional and one required string argument
 #[derive(Parser, Debug)]
@@ -36,8 +34,8 @@ async fn main() -> anyhow::Result<()> {
         1
     };
 
-    let prover = MockProver {};
-    let prover = Sp1Prover {};
+    let prover = sp1_prover::Sp1Prover {};
+
     match prover.prove(block_number).await {
         Ok(proof) => {
             let result = serde_json::to_vec(&proof)?;

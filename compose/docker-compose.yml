@@ -79,6 +79,27 @@ services:
       - "host.docker.internal:host-gateway"
     command: dispatcher
 
+  # We can have an arbitrary number of parallel provers
+#  sp1-prover:
+#    image: "rpajo/modorc-demo:latest"
+#    ports:
+#      - "8901:8888"
+#    env_file: ".env"
+#    depends_on:
+#      - nats-init
+#    volumes:
+#      - './prover_binaries/:/provers:ro'
+#    environment:
+#      - CONSUMER_NAME=mock_prover_2
+#      - INPUT_QUEUE=modularorchestrator.blocks
+#      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+#      - EXECUTOR_TYPE=JsonExecutor
+#      - BINARY=/provers/sp1_prover_linux_arm64_gnu  # <-- to change the prover, use the desired compiled binary from the built parent project
+#      - RUST_BACKTRACE=1
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    command: dispatcher
+
   proof-collector:
     image: "rpajo/modorc-demo:latest"
     ports:
