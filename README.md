@@ -17,3 +17,29 @@ consumers for messages add a unique `CONSUMER_NAME` to the prover service in the
 [docker-compose.yml](compose/docker-compose.yml).
 4. **Proof Collector**: A service which matches the received proofs to the blocks dispatched by the 
 Block Collector.
+
+
+## Running the demo
+
+### Starting the pipeline
+To start the services:
+```shell
+cd compose
+make start-services
+```
+**Note**: _`cast` is called in the Makefile to get the latest finalized block to start proving from.
+Make sure you have the [Foundry](https://getfoundry.sh/introduction/installation) tools installed if you want to use it._
+
+To set the starting block manually:
+```shell
+cd compose
+export NEXT_BLOCK=23839700
+docker compose up -d
+```
+
+### Stopping the pipeline
+To stop the pipeline:
+```shell
+cd compose
+make stop-services
+```
