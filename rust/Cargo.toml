@@ -1,0 +1,29 @@
+[package]
+name = "zkr-ethproofs-provers"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "prover_traits"
+path = "src/prover_traits/lib.rs"
+
+[[bin]]
+name = "sp1-prover"
+path = "src/sp1_prover/main.rs"
+
+[[bin]]
+name = "risc0-prover"
+path = "src/risc0/main.rs"
+
+[[bin]]
+name = "mock-prover"
+path = "src/mock_prover/main.rs"
+
+
+[dependencies]
+anyhow = "1.0.94"
+clap = { version = "4", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["unbounded_depth"] }
+async-trait = "0.1.89"
