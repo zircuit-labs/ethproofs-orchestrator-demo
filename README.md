@@ -19,10 +19,10 @@ The example proving proving starts the following services:
 
 ## Running the pipeline
 
-The Makefile for running different configurations and the docker compose files are found in `compose/`.
+The [Makefile](/compose/Makefile) for running different configurations and the docker compose files are found in `compose/`.
 
 The Makefile provides different targets for running the core orchestrator services with various prover configurations.
-All targets start the same core services (NATS, block collector, and proof collector) but differ in their prover setup.
+All targets start the same [core services](/compose/core-docker-compose.yml) (NATS, block collector, and proof collector) but differ in their prover setup.
 
 ### Available Targets
 
@@ -34,8 +34,6 @@ make start-services
 Runs the full multi-prover setup from `docker-compose-ethproofs.yml`. Each prover (SP1, RISC0, and Zisk) has a unique
 `CONSUMER_NAME`, meaning all provers will independently process every block.
 
-___
-
 #### Split work setup
 ```shell
 make start-split-work
@@ -44,16 +42,12 @@ make start-split-work
 Runs multiple mock provers from `docker-compose-split-work.yml` that share the same `CONSUMER_NAME`. This distributes
 the workload across prover instances - each block is processed by only one prover.
 
-___
-
 #### Single mock prover
 ```shell
 make start-mock-proving
 ```
 
 Runs a single mock prover from `docker-compose-mock.yml` for basic testing without real proof generation.
-
-___
 
 #### Split work setup on amd64 architecture
 ```shell
@@ -62,8 +56,6 @@ make start-split-work-amd64
 
 Same as `start-split-work` but runs SP1 provers on `linux/amd64` platform with appropriate binaries for x86_64
 architecture.
-
-___
 
 #### Stopping the services
 ```shell
