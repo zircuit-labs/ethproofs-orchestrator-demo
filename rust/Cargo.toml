@@ -13,7 +13,7 @@ path = "src/sp1_prover/main.rs"
 
 [[bin]]
 name = "risc0-prover"
-path = "src/risc0/main.rs"
+path = "src/risc0_prover/main.rs"
 
 [[bin]]
 name = "mock-prover"
@@ -27,3 +27,4 @@ tokio = { version = "1", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["unbounded_depth"] }
 async-trait = "0.1.89"
+rand = "0.10.0-rc.5"

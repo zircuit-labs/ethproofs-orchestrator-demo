@@ -1,7 +1,7 @@
 import argparse
 import json
 import asyncio
-from zisk.prover import ZiskProver
+from zisk_prover.prover import ZiskProver
 
 async def run():
     parser = argparse.ArgumentParser()
