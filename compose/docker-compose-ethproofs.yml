@@ -1,0 +1,58 @@
+# PROVER SERVICES
+# Each prover has a unique consumer name which means all provers will process all the blocks
+
+services:
+  # Orchestrator dispatchers which calls into the prover binary to generate proof
+  sp1-prover:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8900:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - CONSUMER_NAME=sp1-prover
+      - INPUT_QUEUE=modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/sp1_prover_linux_arm64_gnu
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+
+  risc0-prover:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8901:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - CONSUMER_NAME=risc0-prover
+      - INPUT_QUEUE=modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/risc0_prover_linux_arm64_gnu
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+
+  zisk-prover:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8902:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - CONSUMER_NAME=zisk-prover
+      - INPUT_QUEUE=modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/zisk_prover_linux_arm64_gnu
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher

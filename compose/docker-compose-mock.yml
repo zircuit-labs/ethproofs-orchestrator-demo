@@ -1,0 +1,20 @@
+# PROVER SERVICES
+
+services:
+  # Orchestrator dispatcher which calls into the prover binary to generate proof
+  mock-prover:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8930:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_prover_linux_arm64_musl  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher

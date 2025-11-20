@@ -1,9 +1,10 @@
 mod mock_prover;
 mod prover;
 mod sp1_prover;
+mod zisk_prover;
+mod risc0_prover;
 
 use clap::Parser;
-use crate::mock_prover::MockProver;
 use crate::prover::Prover;
 
 /// Example CLI with one optional and one required string argument
@@ -34,7 +35,7 @@ async fn main() -> anyhow::Result<()> {
         1
     };
 
-    let prover = sp1_prover::Sp1Prover {};
+    let prover = mock_prover::MockProver {};
 
     match prover.prove(block_number).await {
         Ok(proof) => {
