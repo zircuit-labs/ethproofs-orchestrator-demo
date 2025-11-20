@@ -23,7 +23,7 @@ services:
     entrypoint: [ "/bin/sh", "-c" ]
     command:
       - |
-        nats --server=nats://host.docker.internal:4223 stream add modularorchestrator \
+        nats --server=nats://nats:4222 stream add modularorchestrator \
           --subjects="modularorchestrator.>" \
           --storage=file \
           --replicas=1 \
