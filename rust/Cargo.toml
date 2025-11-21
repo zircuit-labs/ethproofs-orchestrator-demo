@@ -19,6 +19,10 @@ path = "src/risc0_prover/main.rs"
 name = "mock-prover"
 path = "src/mock_prover/main.rs"
 
+[[bin]]
+name = "mock-multistep-prover"
+path = "src/mock_multistep_prover/main.rs"
+
 
 [dependencies]
 anyhow = "1.0.94"
@@ -28,3 +32,4 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["unbounded_depth"] }
 async-trait = "0.1.89"
 rand = "0.10.0-rc.5"
+tracing = { version = "0.1.41", features = ["log"] }

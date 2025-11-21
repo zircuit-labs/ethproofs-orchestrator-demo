@@ -1,0 +1,100 @@
+# PROVER SERVICES
+
+services:
+  # Orchestrator dispatcher which calls into the prover binary to generate proof
+  mock-block-partitioner:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8930:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.blocks
+      - OUTPUT_QUEUE=modularorchestrator.steps
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_multistep_prover_arm64_gnu  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - MULTIPLE_OUTPUT=1
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+  mock-step-prover-1:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8931:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.steps
+      - OUTPUT_QUEUE=modularorchestrator.step_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_multistep_prover_arm64_gnu  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+  mock-step-prover-2:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8932:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.steps
+      - OUTPUT_QUEUE=modularorchestrator.step_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_multistep_prover_arm64_gnu  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+  mock-step-prover-3:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8933:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.steps
+      - OUTPUT_QUEUE=modularorchestrator.step_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_multistep_prover_arm64_gnu  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher
+  mock-step-collector:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8934:8888"
+    env_file: ".env"
+    environment:
+      - INPUT_QUEUE=modularorchestrator.step_proofs
+      - OUTPUT_QUEUE=modularorchestrator.collected_step_proofs
+      - STRATEGY=Match
+      - SINGLE_OUTPUT=false
+      - NUM_INPUTS=10
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: collector
+  mock-prover:
+    image: "rpajo/modorc-demo:latest"
+    ports:
+      - "8935:8888"
+    env_file: ".env"
+    volumes:
+      - './prover_binaries/:/provers:ro'
+    environment:
+      - INPUT_QUEUE=modularorchestrator.collected_step_proofs
+      - OUTPUT_QUEUE=modularorchestrator.block_proofs
+      - EXECUTOR_TYPE=JsonExecutor
+      - BINARY=/provers/mock_multistep_prover_arm64_gnu  # <-- to change the prover, use the desired compiled binary from the built parent project
+      - RUST_BACKTRACE=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: dispatcher

@@ -38,7 +38,15 @@ Minimal setup with one mock prover for testing the pipeline without real proof g
 
 **Use case**: Test pipeline flow and message routing.
 
-### 4. AMD64 Architecture ([docker-compose-split-work-amd64.yml](compose/docker-compose-split-work-amd64.yml))
+### 4. Multistep Mock Prover ([docker-compose-multistep-mock.yml](compose/docker-compose-mock.yml))
+```bash
+make start-multistep-mock-proving
+```
+Demonstrates **horizontal scaling** as Example 2, but for provers that can split computation of a block into multiple parts.
+
+**Use case**: Scale proving capacity by spliting block proof computation.
+
+### 5. AMD64 Architecture ([docker-compose-split-work-amd64.yml](compose/docker-compose-split-work-amd64.yml))
 ```bash
 make start-split-work-amd64
 ```
