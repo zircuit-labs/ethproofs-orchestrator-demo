@@ -38,7 +38,7 @@ Minimal setup with one mock prover for testing the pipeline without real proof g
 
 **Use case**: Test pipeline flow and message routing.
 
-### 4. Multistep Mock Prover ([docker-compose-multistep-mock.yml](compose/docker-compose-mock.yml))
+### 4. Multistep Mock Prover ([docker-compose-multistep-mock.yml](compose/docker-compose-multistep-mock.yml))
 ```bash
 make start-multistep-mock-proving
 ```
