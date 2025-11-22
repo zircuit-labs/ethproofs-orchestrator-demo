@@ -3,7 +3,7 @@
 services:
   # Orchestrator dispatcher which calls into the prover binary to generate proof
   mock-prover:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8910:8888"
     env_file: ".env"
@@ -21,7 +21,7 @@ services:
     command: dispatcher
 
   mock-prover-2:
-      image: "rpajo/modorc-demo:latest"
+      image: "zircuit1/ethproofs-orchestrator:latest"
       ports:
         - "8911:8888"
       env_file: ".env"

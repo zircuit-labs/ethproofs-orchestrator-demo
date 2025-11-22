@@ -4,7 +4,7 @@ services:
   # Orchestrator dispatcher which calls into the prover binary to generate proof
   sp1-prover:
     platform: linux/amd64
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8910:8888"
     env_file: ".env"
@@ -23,7 +23,7 @@ services:
 
   sp1-prover-2:
       platform: linux/amd64
-      image: "rpajo/modorc-demo:latest"
+      image: "zircuit1/ethproofs-orchestrator:latest"
       ports:
         - "8911:8888"
       env_file: ".env"

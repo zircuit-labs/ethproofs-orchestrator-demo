@@ -3,7 +3,7 @@
 services:
   # Orchestrator dispatcher which calls into the prover binary to generate proof
   mock-block-partitioner:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8930:8888"
     env_file: ".env"
@@ -20,7 +20,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: dispatcher
   mock-step-prover-1:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8931:8888"
     env_file: ".env"
@@ -36,7 +36,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: dispatcher
   mock-step-prover-2:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8932:8888"
     env_file: ".env"
@@ -52,7 +52,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: dispatcher
   mock-step-prover-3:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8933:8888"
     env_file: ".env"
@@ -68,7 +68,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: dispatcher
   mock-step-collector:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8934:8888"
     env_file: ".env"
@@ -83,7 +83,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: collector
   mock-prover:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8935:8888"
     env_file: ".env"

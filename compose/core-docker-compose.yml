@@ -41,7 +41,7 @@ services:
 
   # 1. Orchestrator service to collect and blocks from the network
   block-collector:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8888:8888"
     env_file: ".env"
@@ -62,7 +62,7 @@ services:
 
   # 2. Orchestrator service to collect the blocks and proofs from the network
   proof-collector:
-    image: "rpajo/modorc-demo:latest"
+    image: "zircuit1/ethproofs-orchestrator:latest"
     ports:
       - "8889:8888"
     env_file: ".env"
